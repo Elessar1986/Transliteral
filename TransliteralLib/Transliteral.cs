@@ -10,7 +10,7 @@ namespace TransliteralLib
     public class Translit
     {
 
-        private static Dictionary<string, string> TransDict = new Dictionary<string, string>()
+        private static Dictionary<string, string> TransDict = new Dictionary<string, string>()  // словарь с правилами перевода
         {
             {"А", "A" },{"а", "a" },
             {"Б", "B" },{"б", "b" },
@@ -47,7 +47,8 @@ namespace TransliteralLib
             {"ь", "" },{"'", "" }
         };
 
-        public static string ukrToLat(string textToTrans, Dictionary<string,string> translitDictionary = null)
+        //метод для перевода с возможностью подключения собственного словаря правил
+        public static string ukrToLat(string textToTrans, bool filters = true, Dictionary<string,string> translitDictionary = null) 
         {
             if (Regex.IsMatch(textToTrans, @"[a-zA-Z]")) throw new Exception("String contains latin symbols!");
             if (translitDictionary == null) translitDictionary = TransDict;
@@ -83,10 +84,13 @@ namespace TransliteralLib
                     }
                 }
                 //Filters
-                if (word.ToUpper().Contains("ЗГ"))
+                if (filters)
                 {
-                    res.Replace("zh", "zgh");
-                    res.Replace("Zh", "Zgh");
+                    if (word.ToUpper().Contains("ЗГ"))
+                    {
+                        res.Replace("zh", "zgh");
+                        res.Replace("Zh", "Zgh");
+                    }
                 }
 
                 result.Append(res + " ");
