@@ -11,10 +11,15 @@ namespace TestingLib
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Translit.ukrToLat("Юрій Корюківка Ярошенко Знам'янка".ToUpper()));
+            try
+            {
+                Console.WriteLine(Translit.ukrToLat("Юрій Корюківка Ярошенко Знам'янка Згорани Розгон Щербухи Гоща Гаращенко"));
 
-            //Console.WriteLine(Translit.ukrToLat(Console.ReadLine()));
-
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             Console.ReadKey();
         }
     }

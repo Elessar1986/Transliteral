@@ -2,19 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TransliteralLib
 {
     public class Translit
     {
-        [Flags]
-        public enum Rules
-        {
-            None = 0,
-            IgnoreRegistr = 1,
-            Standart = 2
-        }
 
         private static Dictionary<string, string> TransDict = new Dictionary<string, string>()
         {
@@ -53,10 +47,11 @@ namespace TransliteralLib
             {"ь", "" },{"'", "" }
         };
 
-        public static string ukrToLat(string textToTrans, Rules rules = Rules.None)
+        public static string ukrToLat(string textToTrans, Dictionary<string,string> translitDictionary = null)
         {
+            if (Regex.IsMatch(textToTrans, @"[a-zA-Z]")) throw new Exception("String contains latin symbols!");
+            if (translitDictionary == null) translitDictionary = TransDict;
             StringBuilder result = new StringBuilder();
-            //textToTrans = textToTrans.ToLower();
             List<string> words = textToTrans.Split(' ').ToList();
             foreach (var word in words)
             {
@@ -67,25 +62,33 @@ namespace TransliteralLib
                     {
                         if (i == 0)
                         {
-                            res.Append(TransDict[word[i].ToString()]);
+                            res.Append(translitDictionary[word[i].ToString()]);
                         }
                         else
                         {
-                            res.Append(TransDict[word[i].ToString().ToLower()].ToUpper());
+                            res.Append(translitDictionary[word[i].ToString().ToLower()].ToUpper());
                         }
                     }
                     else
                     {
                         if (i == 0)
                         {
-                            res.Append(TransDict[word[i].ToString().ToUpper()].ToLower());
+                            res.Append(translitDictionary[word[i].ToString().ToUpper()].ToLower());
                         }
                         else
                         {
-                            res.Append(TransDict[word[i].ToString()]);
+                            res.Append(translitDictionary[word[i].ToString()]);
                         }
                     }
                 }
+                //Filters
+                if (word.ToUpper().Contains("ЗГ"))
+                {
+                    res.Replace("zh", "zgh");
+                    res.Replace("Zh", "Zgh");
+                }
+
+                result.Append(res + " ");
 
             }
 
