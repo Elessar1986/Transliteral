@@ -53,6 +53,7 @@ namespace TransliteralLib
             if (translitDictionary == null) translitDictionary = TransDict;
             StringBuilder result = new StringBuilder();
             List<string> words = textToTrans.Split(' ').ToList();
+
             foreach (var word in words)
             {
                 StringBuilder res = new StringBuilder();
