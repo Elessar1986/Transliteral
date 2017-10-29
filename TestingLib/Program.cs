@@ -11,7 +11,7 @@ namespace TestingLib
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Translit.ukrToLat("Тернопіль Йосипівка Борщагівка"));
+            Console.WriteLine(Translit.ukrToLat("Юрій Корюківка Ярошенко Знам'янка".ToUpper()));
 
             //Console.WriteLine(Translit.ukrToLat(Console.ReadLine()));
 

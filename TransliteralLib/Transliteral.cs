@@ -12,9 +12,8 @@ namespace TransliteralLib
         public enum Rules
         {
             None = 0,
-            First = 1,
-            Second = 2,
-            AllRules = First | Second 
+            IgnoreRegistr = 1,
+            Standart = 2
         }
 
         private static Dictionary<string, string> TransDict = new Dictionary<string, string>()
@@ -54,30 +53,44 @@ namespace TransliteralLib
             {"ь", "" },{"'", "" }
         };
 
-        public static string ukrToLat(string textToTrans, Rules rules = Rules.None, Func<string, string> func = null)
+        public static string ukrToLat(string textToTrans, Rules rules = Rules.None)
         {
-            string result = null;
-
+            StringBuilder result = new StringBuilder();
+            //textToTrans = textToTrans.ToLower();
             List<string> words = textToTrans.Split(' ').ToList();
-            foreach (var w in words)
+            foreach (var word in words)
             {
-                
-                string res = String.Empty;
-                foreach (var ch in w)
+                StringBuilder res = new StringBuilder();
+                for (int i = 0; i < word.Length; i++)
                 {
-                    res += TransDict[ch.ToString()];
+                    if (Char.IsUpper(word[i]))
+                    {
+                        if (i == 0)
+                        {
+                            res.Append(TransDict[word[i].ToString()]);
+                        }
+                        else
+                        {
+                            res.Append(TransDict[word[i].ToString().ToLower()].ToUpper());
+                        }
+                    }
+                    else
+                    {
+                        if (i == 0)
+                        {
+                            res.Append(TransDict[word[i].ToString().ToUpper()].ToLower());
+                        }
+                        else
+                        {
+                            res.Append(TransDict[word[i].ToString()]);
+                        }
+                    }
                 }
-                result += res + " ";
+
             }
 
-            if(func != null) result = func(textToTrans);
-            return result;
+            return result.ToString();
         }
 
-        public static Func<string, string> ToUpper = (s) =>
-            {
-                s = s.ToUpper();
-                return s;
-            };
     }
 }
