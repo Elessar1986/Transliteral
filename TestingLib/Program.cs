@@ -13,7 +13,19 @@ namespace TestingLib
         {
             try
             {
-                Console.WriteLine(Translit.ukrToLat("Юрій Корюківка Ярошенко Знам'янка Згорани Розгон Щербухи Гоща Гаращенко"));
+                Translit trans = new Translit();
+                string testString = "Юрій Корюківка Ярошенко Знам'янка Згорани Розгон Щербухи Гоща Гаращенко ";
+                Console.WriteLine("Оригинал строки:");
+                Console.WriteLine(testString);
+                Console.WriteLine("Базовое преобразование:");
+                Console.WriteLine(trans.ukrToLat(testString));
+
+                trans["г"] = "g";
+                trans["Г"] = "G";
+                Console.WriteLine("Измененное преобразование:");
+                Console.WriteLine(trans.ukrToLat(testString));
+
+                trans.ResetDictionary();
 
             }
             catch(Exception ex)
